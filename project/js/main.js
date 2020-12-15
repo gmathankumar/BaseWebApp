@@ -1,23 +1,27 @@
-$(document).ready(function(){
-  getWeather();
-})
 
-function getWeather(){
-var url = "https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&appid="+apikey;
+function getWeather(searchQuery){
+var url = "https://api.openweathermap.org/data/2.5/weather?q="+searchQuery+"&units=metric&appid="+apikey;
+
+$(".city").text("");
+$(".temp").text("");
+$(".error-message").text("");
+$(".feelsLike").text("");
+$(".weather").text("");
 
 $.ajax(url,{success: function(data){
+  console.log(data);
   $(".city").text(data.name);
-  $(".temp").text(data.main.temp);
+  $(".temp").text("Temp:"+data.main.temp);
+  $(".feelsLike").text("Feels Like:"+data.main.feels_like);
+  $(".weather").text("Weather:"+data.weather[0].main);
+},error:function(error){
+  $(".error-message").text("An error occurred");
 }})
 
 }
-function myFunction() {
-  // use jQuery ($ is shorthand) to find the div on the page and then change the html
-  // jQuery can do a lot of crazy stuff so make sure to google around to find out more
 
-  $("#demo").html("NEWWW PARAGRAPH #javascript #fire");
-
-  // 'img-circle' is a bootstrap thing! Check out more here: http://getbootstrap.com/css/
-  $("#doge-image").append(`<img class="img-circle" src="images/wowdoge.jpeg" />`);
+function searchWeather(){
+  var searchQuery = $(".search").val();
+  getWeather(searchQuery);
 }
 
